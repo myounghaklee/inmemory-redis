@@ -28,7 +28,7 @@ public class UserController {
             }
             userEmail = userRepository.findById(id).orElse(User.builder().build()).getEmail();
             jedis.set(userEmailRedisKey, userEmail);
-            jedis.setex(userEmailRedisKey, 30, userEmail); 
+            jedis.setex(userEmailRedisKey, 30, userEmail);
             return userEmail;
         }
 
