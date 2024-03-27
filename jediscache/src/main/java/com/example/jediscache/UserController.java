@@ -1,37 +1,23 @@
 package com.example.jediscache;
 
 
+import com.example.jediscache.domain.entity.User;
+import com.example.jediscache.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
-
-    private final JedisPool jedisPool;
+    private final UserService userService;
 
     @GetMapping("/users/{id}/email")
-    public String getUserEmail(@PathVariable Long id){
-
-        try(Jedis jedis = jedisPool.getResource()){
-            String userEmailRedisKey = "users:%d:email".formatted(id);
-
-            String userEmail = jedis.get(userEmailRedisKey);
-            if(userEmail != null){
-                return userEmail;
-            }
-            userEmail = userRepository.findById(id).orElse(User.builder().build()).getEmail();
-            jedis.set(userEmailRedisKey, userEmail);
-            jedis.setex(userEmailRedisKey, 30, userEmail);
-            return userEmail;
-        }
-
+    public User getUserEmail(@PathVariable Long id) {
+        return userService.getUser(id);
     }
 
 }

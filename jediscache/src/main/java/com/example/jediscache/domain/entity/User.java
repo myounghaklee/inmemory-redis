@@ -1,4 +1,4 @@
-package com.example.jediscache;
+package com.example.jediscache.domain.entity;
 
 
 import jakarta.persistence.*;
@@ -29,7 +29,7 @@ public class User {
     @Column(length = 100)
     private String email;
 
-    @Column(length =  30)
+    @Column(length = 30)
     private String name;
 
 
